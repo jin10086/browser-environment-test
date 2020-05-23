@@ -11,13 +11,13 @@ def selenium_html():
     time.sleep(100)
 
 
-async def selenium_html():
+async def pyppeteer_html():
     browser = await launch({"headless": False})
     page = await browser.newPage()
     await page.goto("http://localhost/")
-    print(1)
     await asyncio.sleep(100)
 
 
 if __name__ == "__main__":
-    asyncio.run(selenium_html())
+    # asyncio.run(pyppeteer_html())
+    selenium_html()
