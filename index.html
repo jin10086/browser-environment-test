@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>浏览器环境检测</title>
+    </head>
+
+    <body>
+        <h1>你好，世界！</h1>
+        <script>
+            function recur(obj) {
+                var result = {},
+                    _tmp;
+                for (var i in obj) {
+                    // enabledPlugin is too nested, also skip functions
+                    if (i === 'enabledPlugin' || typeof obj[i] === 'function') {
+                        continue;
+                    } else if (typeof obj[i] === 'object') {
+                        // get props recursively
+                        _tmp = recur(obj[i]);
+                        // if object is not {}
+                        if (Object.keys(_tmp).length) {
+                            result[i] = _tmp;
+                        }
+                    } else {
+                        // string, number or boolean
+                        result[i] = obj[i];
+                    }
+                }
+                return result;
+            }
+
+            function go() {
+
+                var j = new Object();
+                var propertys = Object.getOwnPropertyNames(window);
+
+                propertys.forEach(element => {
+                    if (element === 'globalThis' ||
+                        element === 'Illegal' ||
+                        element === 'parent' ||
+                        element === 'top' ||
+                        element === 'frames' ||
+                        element === 'self' ||
+                        element === 'window' ||
+                        element === 'document'
+                    ) {} else {
+                        eval("j." + element + "=recur(window." + element + ")")
+                    }
+                });
+
+                console.log(JSON.stringify(j))
+
+            }
+            go()
+        </script>
+    </body>
+
+</html>
